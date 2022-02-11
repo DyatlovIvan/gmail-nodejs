@@ -9,6 +9,8 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
+let smpt_login = process.env.SMTP_LOGIN || '---'
+let smpt_password = process.env.SMTP_PASSWORD || '---'
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -16,8 +18,8 @@ let transporter = nodemailer.createTransport({
         rejectUnauthorized: false
     },
     auth: {
-        user: 'dyatlovTest@gmail.com',
-        pass: 'dyatlovTest111'
+        user: smpt_login,
+        pass: smpt_password
     }
 })
 
@@ -27,7 +29,7 @@ app.post('/sendMessage', async function (req, res) {
     console.log('OK')
     let info = await transporter.sendMail({
         from: 'PROFILE',
-        to: 'dyatlovTest@gmail.com',
+        to: smpt_login,
         subject: 'HR',
         html: `<b>Сообщение с портфолио</b>
                 <div>name: ${name}</div>
@@ -42,6 +44,9 @@ app.post('/sendMessage', async function (req, res) {
 app.get('/', function (req, res) {
     res.send('Start')
 })
-app.listen(3010, function () {
+
+let port = process.env.PORT || 3010
+
+app.listen(port, function () {
     console.log('well')
 })
