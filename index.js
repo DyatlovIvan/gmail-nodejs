@@ -2,6 +2,7 @@ const express = require('express')
 const nodemailer = require('nodemailer')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+const {_logFunc} = require("nodemailer/lib/shared");
 
 const app = express()
 app.use(cors())
@@ -23,15 +24,15 @@ let transporter = nodemailer.createTransport({
 app.post('/sendMessage', async function (req, res) {
 
     let {name, email, message} = req.body
-
+    console.log('OK')
     let info = await transporter.sendMail({
         from: 'PROFILE',
         to: 'dyatlovTest@gmail.com',
         subject: 'HR',
         html: `<b>Сообщение с портфолио</b>
-<div>name: ${name}</div>
-<div>email: ${email}</div>
-<div>${message}</div>`
+                <div>name: ${name}</div>
+                <div>email: ${email}</div>
+                <div>${message}</div>`
     })
 
 
